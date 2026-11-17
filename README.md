@@ -38,6 +38,7 @@ Uzhudhuntu_Vaazhvaare/
 ├── .gitignore
 ├── requirements.txt
 └── README.md
+
 ⚙️ Local Installation & Setup Guide
 1. Clone the Repository
 Bash
