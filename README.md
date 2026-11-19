@@ -1,84 +1,366 @@
 # 🌾 உழுதுண்டு வாழ்வாரே (Uzhudhuntu Vaazhvaare)
-> **Tamil Nadu Agricultural Subsidies, Drip Irrigation, Solar Pumps & NABARD Unit Cost AI Assistant**
 
-An intelligent, bilingual (Tamil & English) RAG-powered assistant designed for Tamil Nadu farmers and agricultural officers to instantly query government schemes, NABARD unit costs, dairy/livestock loans, and subsidies via text and voice.
+### Bilingual Agricultural Information Assistant for Tamil Nadu
 
----
+> **A Tamil and English RAG assistant for Tamil Nadu agricultural subsidies, drip irrigation, solar pumps, NABARD unit costs, and farmer-oriented scheme guidance.**
 
-## 🚀 Key Features
-* **Bilingual RAG Engine**: Grounded directly in official Tamil Nadu government booklets, citizen charters, and NABARD unit cost reports.
-* **Voice-Enabled Assistant**: Whisper-powered speech-to-text input with gTTS natural audio playback in Tamil and English.
-* **Officer Management Mode**: Built-in document management drawer allowing officers to upload and index new scheme PDFs on the fly.
-* **Instant WhatsApp Sharing**: One-click sharing of verified scheme benefit summaries directly to farmers' WhatsApp chats.
-* **Cultural Grounding**: Embedded daily Thirukkural agricultural wisdom ticker (`சுழன்றும்ஏர்ப் பின்னது உலகம்...`).
+[![Python](https://img.shields.io/badge/Python-3.10+-3776AB?logo=python&logoColor=white)](https://www.python.org/) [![FastAPI](https://img.shields.io/badge/FastAPI-Backend-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/) [![Streamlit](https://img.shields.io/badge/Streamlit-Frontend-FF4B4B?logo=streamlit&logoColor=white)](https://streamlit.io/) [![License](https://img.shields.io/badge/License-Not%20Specified-lightgrey)](#license)
 
 ---
 
-## 🛠️ Tech Stack
-* **Frontend**: Streamlit (Responsive, custom agricultural UI)
-* **Backend**: FastAPI, Uvicorn
-* **AI / RAG Pipeline**: LangChain, OpenAI GPT-4o-mini, OpenAI Whisper, FAISS Vector Store, gTTS (Google Text-to-Speech)
-* **Document Processing**: PyPDF
+## 📌 Project Overview
+
+**உழுதுண்டு வாழ்வாரே** is a bilingual, retrieval-augmented generation (RAG) application designed to help farmers and agricultural officers access verified information about Tamil Nadu government schemes and agricultural investments.
+
+The system converts official PDFs into searchable vector data, retrieves relevant information for a user's question, and generates a concise Tamil or English response grounded in the selected documents. It is also designed around practical field use, including voice interaction, WhatsApp sharing, officer document management, and culturally relevant agricultural guidance.
+
+> **Important:** This project provides decision-support information. It does not replace official departmental verification, eligibility rules, or the latest government notifications.
+
+---
+
+## 🧭 RTCFR Framework
+
+### **R — Role**
+
+The application acts as an agricultural scheme information assistant for:
+
+- Farmers seeking bilingual information about subsidies and schemes
+- Agricultural officers providing verified, fast responses
+- NABARD and agricultural stakeholders comparing unit-cost information
+- Citizens who need documents translated into accessible Tamil or English guidance
+
+### **T — Task**
+
+The system is expected to:
+
+1. Accept Tamil or English text and voice queries.
+2. Search approved agricultural source documents.
+3. Retrieve relevant passages using semantic similarity.
+4. Generate grounded, understandable answers.
+5. Identify source information where available.
+6. Provide practical next steps for farmer and officer use.
+
+### **C — Context**
+
+Agricultural scheme information is often distributed across government PDFs, circulars, and booklets. Important details may vary by scheme, district, season, crop, beneficiary category, and funding period.
+
+This project addresses that problem by using official documents as a retrieval knowledge base and enabling officers to add updated PDFs. The assistant then uses that context instead of relying on generic model knowledge alone.
+
+### **F — Format**
+
+The application returns a conversational answer through a Streamlit interface. Results are intended to be:
+
+- Bilingual: Tamil and English
+- Concise and field-friendly
+- Grounded in retrieved source material
+- Suitable for voice playback and WhatsApp sharing
+- Clearly distinguished from unsupported or outdated information
+
+### **R — Requirements**
+
+A complete answer should:
+
+- Address the farmer's actual scheme, crop, asset, or investment question
+- Explain eligibility or benefits only when supported by the retrieved document
+- Recommend official validation for applications or financial decisions
+- Avoid inventing rates, dates, departments, or approval conditions
+- Preserve the meaning of the source without presenting it as newly issued policy
+
+---
+
+## ✨ Key Features
+
+- **Bilingual RAG Engine** — Answers queries in Tamil or English using indexed government and NABARD documents.
+- **Voice Input** — Uses OpenAI Whisper for speech-to-text transcription.
+- **Voice Output** — Uses gTTS for Tamil and English audio playback.
+- **Officer Document Management** — Uploads and indexes official PDFs into the FAISS knowledge base.
+- **Source-Grounded Responses** — Retrieves relevant content before generating an answer.
+- **WhatsApp Sharing** — Sends a concise, readable scheme response to a farmer's chat.
+- **Agricultural Context** — Supports scheme, subsidy, crop, dairy, livestock, drip irrigation, solar pump, and unit-cost questions.
+- **Thirukkural Integration** — Provides culturally relevant Tamil agricultural wisdom.
+- **Evaluation Module** — Includes `backend/evaluate.py` for buildathon and response-quality evaluation workflows.
+
+---
+
+## 🛠️ Technology Stack
+
+| Layer | Technology | Purpose |
+|---|---|---|
+| Frontend | Streamlit | Bilingual user interface and officer controls |
+| Backend | FastAPI, Uvicorn | API and application orchestration |
+| LLM | OpenAI GPT-4o-mini | Response generation |
+| Retrieval | LangChain, FAISS | Document chunking, embeddings, and semantic retrieval |
+| Speech-to-Text | OpenAI Whisper | Voice query transcription |
+| Text-to-Speech | gTTS | Tamil and English audio playback |
+| Document Processing | PyPDF | PDF text extraction |
+| Document Format | PDF | Government schemes and NABARD unit-cost sources |
+
+---
+
+## 🏗️ System Architecture
+
+```text
+┌────────────────────┐
+│  Farmer / Officer  │
+└─────────┬──────────┘
+          │ Tamil or English text / voice
+          ▼
+┌────────────────────┐
+│ Streamlit Frontend │
+└─────────┬──────────┘
+          │ HTTP API request
+          ▼
+┌────────────────────┐
+│  FastAPI Backend   │
+├────────────────────┤
+│ Query processing   │
+│ Document retrieval │
+│ RAG generation     │
+│ Voice processing   │
+└─────────┬──────────┘
+          │
+          ▼
+┌────────────────────┐
+│ FAISS Vector Store │
+└─────────┬──────────┘
+          │
+          ▼
+┌──────────────────────────────────┐
+│ Official PDFs, circulars, reports│
+└──────────────────────────────────┘
+```
+
+### RAG Workflow
+
+1. A document is uploaded or loaded into the application.
+2. PyPDF extracts its text.
+3. LangChain chunks the content into searchable passages.
+4. Passages are converted into embeddings and stored in FAISS.
+5. The user's query retrieves the most relevant passages.
+6. GPT-4o-mini generates a contextual response from retrieved evidence.
+7. Streamlit presents the answer, with optional voice and WhatsApp actions.
 
 ---
 
 ## 📁 Repository Structure
+
 ```text
-Uzhudhuntu_Vaazhvaare/
+buildathon_Uzhudhuntu_Vaazhvaare/
 ├── backend/
-│   ├── __init__.py
-│   └── main.py
+│   ├── main.py       # FastAPI application and RAG endpoints
+│   └── evaluate.py   # Evaluation utilities
 ├── frontend/
-│   └── app.py
+│   └── app.py        # Streamlit interface
 ├── data/
 │   ├── 1.banner_en.png
-│   ├── 2.banner_ta.png
-│   └── [Official Scheme PDFs & Booklets]
+│   └── 2.banner_ta.png
+├── 0. Tamil Nadu Unit cost Booklet 2026-27 FINAL.pdf.pdf
+├── agri_e_cc_2025_26.pdf
+├── agri_e_cc_2026_27.pdf.pdf
+├── agri_e_pn_2026_27.pdf
+├── Binder1.pdf
+├── Agricultural_Schemes_RAG_RTCFR_Prompt.pdf
 ├── .env.example
 ├── .gitignore
 ├── requirements.txt
 └── README.md
+```
 
-⚙️ Local Installation & Setup Guide
-1. Clone the Repository
-Bash
-git clone [https://github.com/your-username/Uzhudhuntu_Vaazhvaare.git](https://github.com/your-username/Uzhudhuntu_Vaazhvaare.git)
-cd Uzhudhuntu_Vaazhvaare
-2. Set Up Virtual Environment & Dependencies
-Bash
+---
+
+## ⚙️ Installation and Setup
+
+### Prerequisites
+
+- Python 3.10 or later
+- pip
+- OpenAI API key
+- Internet access for model and text-to-speech services
+- Microphone support for browser voice input
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/Karthickbalakrishnan/buildathon_Uzhudhuntu_Vaazhvaare.git
+cd buildathon_Uzhudhuntu_Vaazhvaare
+```
+
+### 2. Create and activate a virtual environment
+
+**Linux or macOS:**
+
+```bash
 python3 -m venv venv
 source venv/bin/activate
-pip install --upgrade pip
+```
+
+**Windows:**
+
+```bash
+python -m venv venv
+venv\Scripts\activate
+```
+
+### 3. Install dependencies
+
+```bash
+python -m pip install --upgrade pip
 pip install -r requirements.txt
-3. Configure Environment Variables
-Create a .env file in the root directory:
+```
 
-Bash
-touch .env
-Open .env and add your OpenAI API key:
+### 4. Configure environment variables
 
-Code snippet
-OPENAI_API_KEY=your_actual_openai_api_key_here
-4. Run the Application (Two Terminal Tabs)
-Open two separate terminal windows in the project root directory:
+Create a `.env` file from the example:
 
-Terminal 1: Start Backend (FastAPI)
+```bash
+cp .env.example .env
+```
 
-Bash
-source venv/bin/activate
+Add the required API key:
+
+```dotenv
+OPENAI_API_KEY=your_openai_api_key
+```
+
+Never commit your real API key or expose it in screenshots or logs.
+
+### 5. Start the backend
+
+In Terminal 1:
+
+```bash
 python -m uvicorn backend.main:app --reload --port 8000
-Terminal 2: Start Frontend (Streamlit)
+```
 
-Bash
-source venv/bin/activate
+FastAPI API documentation should be available at:
+
+```text
+http://127.0.0.1:8000/docs
+```
+
+### 6. Start the frontend
+
+In Terminal 2:
+
+```bash
 streamlit run frontend/app.py
-Access the application locally in your browser at http://localhost:8501.
+```
 
-👨‍🌾 Officer Mode Instructions
-Expand the Officer Management sidebar on the left.
+Open:
 
-Toggle Enable Officer Mode.
+```text
+http://localhost:8501
+```
 
-Upload any official Tamil Nadu agricultural PDF or NABARD circular.
+---
 
-Click Index PDF to instantly update the FAISS vector database.
+## 👨‍🌾 Officer Mode
+
+Officer Mode enables authorized users or officers to refresh the knowledge base during demonstrations or operational use.
+
+1. Open the Streamlit sidebar.
+2. Enable **Officer Mode**.
+3. Upload an official Tamil Nadu or NABARD PDF.
+4. Select **Index PDF**.
+5. Wait for the document-processing operation to complete.
+6. Ask a question through the normal chat interface.
+
+Use only accurate, current, and officially published documents. Remove or replace outdated files and rebuild the index when source information changes.
+
+---
+
+## 💬 Example Queries
+
+### Tamil
+
+- Tamil Nadu-வில் drip irrigation subsidy எப்படி பெறுவது?
+- Solar pumpக்கு NABARD unit cost என்ன?
+- Woman farmer eligibility for agricultural subsidy என்ன?
+- Dairy cow scheme benefits என்ன?
+
+### English
+
+- What is the subsidy for drip irrigation in Tamil Nadu?
+- What is the NABARD unit cost for a solar pump?
+- What documents are required to apply for a dairy loan?
+- Compare available assistance for micro-irrigation and livestock.
+
+---
+
+## 🧪 Evaluation
+
+The repository includes `backend/evaluate.py` for buildathon-oriented evaluation. Evaluations should measure:
+
+- **Retrieval relevance** — Is the correct source passage returned?
+- **Answer correctness** — Does the response match the official document?
+- **Grounding** — Can each key claim be traced to retrieved evidence?
+- **Bilingual quality** — Is the answer understandable in both Tamil and English?
+- **Completeness** — Are eligibility, benefits, documents, and next steps handled when available?
+- **Safety** — Does the system avoid unsupported promises or fabricated policy details?
+- **User experience** — Does voice input, text-to-speech, and sharing work reliably?
+
+A strong demonstration should include at least one successful answer, one Tamil query, one voice interaction, and one officer-mode document indexing example.
+
+---
+
+## 🔒 Responsible AI and Safety
+
+- The application uses RAG, but retrieved context can still be incomplete or misinterpreted.
+- Answers should not be presented as a final approval or guarantee of benefits.
+- Farmers should confirm eligibility, deadlines, subsidy rates, and documents with the relevant department or official portal.
+- Uploaded documents should be authorized and current.
+- API keys and personal data must not be stored in source files or shared in public demonstrations.
+
+---
+
+## ⚠️ Known Limitations
+
+- PDF extraction quality may vary for scanned or image-heavy documents.
+- Retrieval results depend on document indexing quality and chunk selection.
+- Scheme rules and unit costs may change over time.
+- OpenAI and speech services require network access and valid credentials.
+- Application performance depends on API availability and the quality of source PDFs.
+
+---
+
+## 🗺️ Future Enhancements
+
+- District and block-level scheme filtering
+- Source citations in every response
+- Document freshness indicators
+- Offline or cached scheme search
+- SMS and IVRS support
+- Improved scanned-PDF OCR
+- Structured eligibility assessment
+- User feedback-based response evaluation
+- Multi-document and scheme comparison views
+
+---
+
+## 🤝 Contributing
+
+Contributions should improve accuracy, usability, accessibility, or retrieval quality.
+
+1. Create a new branch.
+2. Make focused changes.
+3. Test backend and frontend behavior locally.
+4. Update the README if setup or features change.
+5. Submit a pull request with a clear description and test evidence.
+
+---
+
+## 📄 License
+
+A license is not currently specified in this repository. Until a license is added, no permission is granted for reuse or distribution beyond the source owner's rights.
+
+---
+
+## 📚 Official Reference Use
+
+The knowledge base may include Tamil Nadu government circulars, citizen charters, agricultural schemes, and NABARD or other official unit-cost documents. Always verify the latest document, notification, and eligibility rules through the responsible government department or authorized portal before submission or financial commitment.
+
+---
+
+## 📬 Repository
+
+**GitHub:** [Karthickbalakrishnan/buildathon_Uzhudhuntu_Vaazhvaare](https://github.com/Karthickbalakrishnan/buildathon_Uzhudhuntu_Vaazhvaare)
